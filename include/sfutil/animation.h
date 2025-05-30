@@ -8,7 +8,7 @@ namespace sfu {
 class AnimatedSprite : public sf::Drawable, public sf::Transformable {
 private:
     sf::Vertex m_vertices[4];
-    TextureAtlas m_atlas;
+    const TextureAtlas* m_atlas;
     sf::Vector2u m_index;
     sf::IntRect m_textureRect;
 
@@ -19,9 +19,9 @@ private:
     void updateFrame();
 
 public:
-    explicit AnimatedSprite(const sf::Texture& texture, const sf::Vector2u& dimensions);
+    explicit AnimatedSprite(const TextureAtlas& atlas);
 
-    void setAnimation(const sf::Texture& texture, const sf::Vector2u& dimensions);
+    void setAnimation(const TextureAtlas& atlas);
     void setColor(const sf::Color& color);
     void setIsPlaying(bool playing);
     void setFramerate(float framerate);
@@ -35,25 +35,11 @@ public:
     uint32_t getRow() const;
     uint32_t getFrame() const;
 
-    void setHorizontalShear(float factor) {
-        for (int i = 0; i < 4; i++) {
-            m_vertices[i].position = sf::Vector2f(
-                    m_vertices[i].position.x + m_vertices[i].position.y * factor,
-                    m_vertices[i].position.y
-                );
-        }
-    }
-    void setVerticalShear(float factor) {
-        for (int i = 0; i < 4; i++) {
-            m_vertices[i].position = sf::Vector2f(
-                    m_vertices[i].position.x,
-                    m_vertices[i].position.x * factor + m_vertices[i].position.y
-                );
-        }
-    }
+    sf::Vector2f getSize() const;
+    sf::Vector2u getDimensions() const;
 
-    // sf::FloatRect getLocalBounds() const;
-    // sf::FloatRect getGlobalBounds() const;
+    sf::FloatRect getLocalBounds() const;
+    sf::FloatRect getGlobalBounds() const;
 
     void update(float dt);
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;

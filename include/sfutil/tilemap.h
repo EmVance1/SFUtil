@@ -7,7 +7,7 @@ namespace sfu {
 
 class TileMap : public sf::Drawable, public sf::Transformable {
 private:
-    TextureAtlas m_atlas;
+    const TextureAtlas* m_atlas;
     QuadArray m_quads;
     sf::Vector2u m_dimensions;
 

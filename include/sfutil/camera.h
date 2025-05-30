@@ -10,7 +10,6 @@ public:
         Static,
         TrackLock,
         TrackBehind,
-        TrackAhead,
         FollowCurve,
     };
 
@@ -30,7 +29,10 @@ public:
     void setTrackingPos(const sf::Vector2f& pos, ControlMode mode);
     void setTrackingOffset(float offset);
 
-    void update(float dt);
+    void setCenter(const sf::Vector2f& center, bool reset_track = false);
+    sf::FloatRect getFrustum() const;
+
+    void update(float deltatime);
 };
 
 }

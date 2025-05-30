@@ -1,7 +1,8 @@
 {
     "project": "sfutil",
     "cpp": "c++20",
-    "dependencies": [ "../_Libs/SFML-3.static" ],
     "incdirs": [ "./src/", "./include/sfutil" ],
+    "dependencies": [ "../_Libs/SFML-3:static" ],
+
     "include-public": "include/"
 }

@@ -4,7 +4,7 @@
 #include "camera.h"
 #include "animation.h"
 #include "alphamap.h"
-#include "circle.h"
+#include "geometry.h"
 #include "tilemap.h"
 #include "postfx.h"
 

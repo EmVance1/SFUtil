@@ -4,7 +4,7 @@
 namespace sfu {
 
 void AnimatedSprite::updateFrame() {
-    m_textureRect = m_atlas.getTextureRect(m_index);
+    m_textureRect = m_atlas->getTextureRect(m_index);
     m_vertices[0].texCoords = sf::Vector2f(m_textureRect.position);
     m_vertices[1].texCoords = sf::Vector2f(m_textureRect.position) + sf::Vector2f((float)m_textureRect.size.x, 0.f);
     m_vertices[2].texCoords = sf::Vector2f(m_textureRect.position) + sf::Vector2f(0.f, (float)m_textureRect.size.y);
@@ -12,8 +12,8 @@ void AnimatedSprite::updateFrame() {
 }
 
 
-AnimatedSprite::AnimatedSprite(const sf::Texture& texture, const sf::Vector2u& dimensions)
-    : m_atlas(texture, dimensions), m_index(0, 0), m_textureRect(m_atlas.getTextureRect(m_index))
+AnimatedSprite::AnimatedSprite(const TextureAtlas& atlas)
+    : m_atlas(&atlas), m_index(0, 0), m_textureRect(m_atlas->getTextureRect(m_index))
 {
     m_vertices[0].position = sf::Vector2f(0.f, 0.f);
     m_vertices[1].position = sf::Vector2f((float)m_textureRect.size.x, 0.f);
@@ -23,10 +23,10 @@ AnimatedSprite::AnimatedSprite(const sf::Texture& texture, const sf::Vector2u& d
 }
 
 
-void AnimatedSprite::setAnimation(const sf::Texture& texture, const sf::Vector2u& dimensions) {
-    m_atlas.setTexture(texture, dimensions);
+void AnimatedSprite::setAnimation(const TextureAtlas& atlas) {
+    m_atlas = &atlas;
     m_index = sf::Vector2u(0, 0);
-    m_textureRect = m_atlas.getTextureRect(m_index);
+    m_textureRect = m_atlas->getTextureRect(m_index);
     m_vertices[0].position = sf::Vector2f(0.f, 0.f);
     m_vertices[1].position = sf::Vector2f((float)m_textureRect.size.x, 0.f);
     m_vertices[2].position = sf::Vector2f(0.f, (float)m_textureRect.size.y);
@@ -60,7 +60,7 @@ void AnimatedSprite::setFrame(uint32_t frame) {
 
 
 const sf::Texture& AnimatedSprite::getTexture() const {
-    return m_atlas.getTexture();
+    return m_atlas->getTexture();
 }
 
 const sf::Color& AnimatedSprite::getColor() const {
@@ -83,8 +83,23 @@ uint32_t AnimatedSprite::getFrame() const {
     return m_index.x;
 }
 
-// sf::FloatRect getLocalBounds() const;
-// sf::FloatRect getGlobalBounds() const;
+
+sf::Vector2f AnimatedSprite::getSize() const {
+    return ((sf::Vector2f)m_atlas->getCellSize()).componentWiseMul(getScale());
+}
+
+sf::Vector2u AnimatedSprite::getDimensions() const {
+    return m_atlas->getDimensions();
+}
+
+
+sf::FloatRect AnimatedSprite::getLocalBounds() const {
+    return sf::FloatRect(m_vertices[0].position, m_vertices[2].position - m_vertices[0].position);
+}
+
+sf::FloatRect AnimatedSprite::getGlobalBounds() const {
+    return getTransform().transformRect(getLocalBounds());
+}
 
 
 void AnimatedSprite::update(float dt) {
@@ -92,7 +107,7 @@ void AnimatedSprite::update(float dt) {
         m_time += dt;
         if (m_time >= m_frametime) {
             m_time -= m_frametime;
-            m_index.x = (m_index.x + 1) % m_atlas.getDimensions().x;
+            m_index.x = (m_index.x + 1) % m_atlas->getDimensions().x;
             updateFrame();
         }
     }
