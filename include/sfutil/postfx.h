@@ -12,15 +12,11 @@ public:
     std::vector<sf::Shader>& getShaders() { return m_shaders; }
 
     sf::Shader& addShader() {
-        auto& shader = m_shaders.emplace_back();
-        return shader;
+        return m_shaders.emplace_back();
     }
 
     sf::Shader& loadShader(const std::string& filename) {
-        auto& shader = m_shaders.emplace_back();
-        std::ignore = shader.loadFromFile(filename, sf::Shader::Type::Fragment);
-        shader.setUniform("texture", sf::Shader::CurrentTexture);
-        return shader;
+        return m_shaders.emplace_back(std::string_view(filename), sf::Shader::Type::Fragment);
     }
 
     void postFxDisplay() {
