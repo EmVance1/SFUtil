@@ -35,6 +35,11 @@ sf::FloatRect Camera::getFrustum() const {
     return sf::FloatRect(getCenter() - getSize() * 0.5f, getSize());
 }
 
+sf::Vector2f Camera::mapPixelToWorld(const sf::Vector2i& pixel, const sf::Vector2i& viewport) const {
+    const auto frustum = getFrustum();
+    const auto ratio = sf::Vector2f(pixel).componentWiseDiv((sf::Vector2f)viewport);
+    return frustum.position + frustum.size.componentWiseMul(ratio);
+}
 
 void Camera::update(float deltatime) {
     switch (m_mode) {

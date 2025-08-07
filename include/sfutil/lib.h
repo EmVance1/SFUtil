@@ -1,6 +1,7 @@
 #pragma once
 
 #include "particle/system.h"
+#include "lineshape.h"
 #include "camera.h"
 #include "animation.h"
 #include "alphamap.h"

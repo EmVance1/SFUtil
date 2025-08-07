@@ -40,6 +40,10 @@ void AnimatedSprite::setColor(const sf::Color& color) {
     }
 }
 
+void AnimatedSprite::setIsLooped(bool loop) {
+    m_looping = loop;
+}
+
 void AnimatedSprite::setIsPlaying(bool playing) {
     m_playing = playing;
 }
@@ -59,8 +63,8 @@ void AnimatedSprite::setFrame(uint32_t frame) {
 }
 
 
-const sf::Texture& AnimatedSprite::getTexture() const {
-    return m_atlas->getTexture();
+const sfu::TextureAtlas& AnimatedSprite::getAnimation() const {
+    return *m_atlas;
 }
 
 const sf::Color& AnimatedSprite::getColor() const {
@@ -84,15 +88,6 @@ uint32_t AnimatedSprite::getFrame() const {
 }
 
 
-sf::Vector2f AnimatedSprite::getSize() const {
-    return ((sf::Vector2f)m_atlas->getCellSize()).componentWiseMul(getScale());
-}
-
-sf::Vector2u AnimatedSprite::getDimensions() const {
-    return m_atlas->getDimensions();
-}
-
-
 sf::FloatRect AnimatedSprite::getLocalBounds() const {
     return sf::FloatRect(m_vertices[0].position, m_vertices[2].position - m_vertices[0].position);
 }
@@ -107,7 +102,14 @@ void AnimatedSprite::update(float dt) {
         m_time += dt;
         if (m_time >= m_frametime) {
             m_time -= m_frametime;
-            m_index.x = (m_index.x + 1) % m_atlas->getDimensions().x;
+            const auto max_x = m_atlas->getDimensions().x;
+            if (++m_index.x == max_x) {
+                if (m_looping) {
+                    m_index.x %= max_x;
+                } else {
+                    m_index.x = max_x - 1;
+                }
+            }
             updateFrame();
         }
     }
@@ -115,7 +117,7 @@ void AnimatedSprite::update(float dt) {
 
 void AnimatedSprite::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     states.transform.combine(getTransform());
-    states.texture = &getTexture();
+    states.texture = &m_atlas->getTexture();
     target.draw(m_vertices, 4, sf::PrimitiveType::TriangleStrip, states);
 }
 

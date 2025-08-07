@@ -7,14 +7,15 @@ namespace sfu {
 
 class AnimatedSprite : public sf::Drawable, public sf::Transformable {
 private:
-    sf::Vertex m_vertices[4];
     const TextureAtlas* m_atlas;
+    sf::Vertex m_vertices[4];
     sf::Vector2u m_index;
     sf::IntRect m_textureRect;
 
     float m_frametime = 0.25f;
     float m_time = 0.f;
-    bool m_playing = true;
+    bool m_playing = false;
+    bool m_looping = false;
 
     void updateFrame();
 
@@ -23,20 +24,19 @@ public:
 
     void setAnimation(const TextureAtlas& atlas);
     void setColor(const sf::Color& color);
+    void setIsLooped(bool loop);
     void setIsPlaying(bool playing);
     void setFramerate(float framerate);
     void setRow(uint32_t row);
     void setFrame(uint32_t frame);
 
-    const sf::Texture& getTexture() const;
+    const sfu::TextureAtlas& getAnimation() const;
     const sf::Color& getColor() const;
+    bool getIsLooped() const;
     bool getIsPlaying() const;
     float getFramerate() const;
     uint32_t getRow() const;
     uint32_t getFrame() const;
-
-    sf::Vector2f getSize() const;
-    sf::Vector2u getDimensions() const;
 
     sf::FloatRect getLocalBounds() const;
     sf::FloatRect getGlobalBounds() const;

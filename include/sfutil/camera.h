@@ -31,6 +31,7 @@ public:
 
     void setCenter(const sf::Vector2f& center, bool reset_track = false);
     sf::FloatRect getFrustum() const;
+    sf::Vector2f mapPixelToWorld(const sf::Vector2i& pixel, const sf::Vector2i& viewport) const;
 
     void update(float deltatime);
 };

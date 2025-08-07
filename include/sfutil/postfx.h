@@ -15,8 +15,11 @@ public:
         return m_shaders.emplace_back();
     }
 
-    sf::Shader& loadShader(const std::string& filename) {
-        return m_shaders.emplace_back(std::string_view(filename), sf::Shader::Type::Fragment);
+    sf::Shader& loadShaderFromMemory(const std::string& source) {
+        return m_shaders.emplace_back(std::string_view(source), sf::Shader::Type::Fragment);
+    }
+    sf::Shader& loadShaderFromFile(const std::string& filename) {
+        return m_shaders.emplace_back(std::filesystem::path(filename), sf::Shader::Type::Fragment);
     }
 
     void postFxDisplay() {
