@@ -1,7 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <random>
-#include "quadarray.h"
+#include "../quadarray.h"
 #include "cullstrat.h"
 
 

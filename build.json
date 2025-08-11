@@ -1,8 +1,8 @@
 {
     "project": "sfutil",
-    "cpp": "c++20",
-    "incdirs": [ "./src/", "./include/sfutil" ],
+    "lang": "c++20",
+    "incdirs": [ "src", "include/sfutil" ],
     "dependencies": [ "../_Libs/SFML-3:static" ],
 
-    "include-public": "include/"
+    "include-public": "include"
 }

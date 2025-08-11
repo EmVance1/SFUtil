@@ -1,5 +1,6 @@
+// #include "vangotest/asserts.h"
 #include <SFML/Graphics.hpp>
-#include "mscmptest/asserts.h"
+#include <iostream>
 #include "sfutil.h"
 
 
@@ -8,10 +9,10 @@ void fountain_visual() {
     auto postfx = sfu::PostFx();
     std::ignore = postfx.resize({800, 800});
 
-    auto& s2 = postfx.loadShader("test/res/glitch.glsl");
+    auto& s2 = postfx.loadShaderFromFile("test/res/glitch.glsl");
     s2.setUniform("dist", 4);
 
-    auto& s1 = postfx.loadShader("test/res/CRT.glsl");
+    auto& s1 = postfx.loadShaderFromFile("test/res/CRT.glsl");
     s1.setUniform("curvature", sf::Vector2f(3.5f, 3.5f));
 
     auto system = sfu::ps::ParticleSystem::make<sfu::ps::Fountain>();
@@ -66,10 +67,10 @@ void snow_visual() {
     auto postfx = sfu::PostFx();
     std::ignore = postfx.resize({800, 800});
 
-    auto& s2 = postfx.loadShader("test/res/glitch.glsl");
+    auto& s2 = postfx.loadShaderFromFile("test/res/glitch.glsl");
     s2.setUniform("dist", 2);
 
-    auto& s1 = postfx.loadShader("test/res/CRT.glsl");
+    auto& s1 = postfx.loadShaderFromFile("test/res/CRT.glsl");
     s1.setUniform("curvature", sf::Vector2f(3.5f, 3.5f));
 
     auto system = sfu::ps::ParticleSystem::make<sfu::ps::Snow>();
@@ -116,8 +117,8 @@ void snow_visual() {
 void anim_visual() {
     auto window = sf::RenderWindow(sf::VideoMode({800, 800}), "TEST ANIMATION", sf::Style::Default);
 
-    auto tex = sf::Texture("test/res/player.png");
-    auto anim = sfu::AnimatedSprite(tex, {4, 5});
+    auto atlas = sfu::TextureAtlas("test/res/player.png", {4, 5});
+    auto anim = sfu::AnimatedSprite(atlas);
     anim.setFramerate(4);
     anim.setPosition({400, 400});
     anim.setScale({4, 4});
