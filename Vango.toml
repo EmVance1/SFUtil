@@ -1,0 +1,12 @@
+[package]
+name = "SFUtil"
+version = "0.1.0"
+lang = "C++20"
+kind = "staticlib"
+
+include = [ "src", "include/sfutil" ]
+include-pub = "include"
+
+[dependencies]
+SFML = { path = "../_Libs/SFML-3" }
+
